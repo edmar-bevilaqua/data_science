@@ -1,0 +1,10 @@
+name: ML1
+channels:
+    - conda-forge
+    - defaults
+dependencies:
+    - conda-forge::jupyterlab
+    - conda-forge::matplotlib
+    - conda-forge::numpy
+    - conda-forge::pandas
+    - conda-forge::scikit-learn
