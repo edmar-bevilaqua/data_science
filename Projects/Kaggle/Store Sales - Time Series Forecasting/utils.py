@@ -4,7 +4,6 @@ import pandas as pd
 import seaborn as sns
 
 
-# From Lesson 3
 def seasonal_plot(X, y, period, freq, ax=None):
     if ax is None:
         _, ax = plt.subplots()
@@ -72,7 +71,6 @@ def plot_periodogram(ts, detrend='linear', ax=None):
     return ax
 
 
-# From Lesson 4
 def lagplot(x, y=None, shift=1, standardize=False, ax=None, **kwargs):
     from matplotlib.offsetbox import AnchoredText
     x_ = x.shift(shift)
@@ -137,19 +135,6 @@ def plot_lags(x,
     plt.setp(axs[:, 0], ylabel=y.name if y is not None else x.name)
     fig.tight_layout(w_pad=0.1, h_pad=0.1)
     return fig
-
-
-# def make_lag_features(y, lags):
-#     name = 'lag' if lags > 0 else 'lead'
-#     steps = range(1, lags + 1) if lags > 0 else range(-1, lags - 1, -1)
-#     return pd.concat(
-#         [y.shift(i, freq='infer') for i in steps],
-#         axis=1,
-#         join='outer',
-#         keys=[f'{y.name}_{name}_{i if lags > 0 else -i}' for i in steps],
-#     )
-
-# From Lesson 5
 
 
 class BoostedHybrid:
