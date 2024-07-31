@@ -1,7 +1,10 @@
+import re
+import subprocess
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
+from pathlib import Path
 
 
 def seasonal_plot(X, y, period, freq, ax=None):
@@ -234,3 +237,66 @@ def plot_multistep(y, every=1, ax=None, palette_kwargs=None):
         preds.index = pd.period_range(start=date, periods=len(preds))
         preds.plot(ax=ax)
     return ax
+
+# Get size of files in a directory
+def get_disk_usage(directory):
+    cmd = f'du {directory}/* -h | sort -rh'
+    result = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, text=True)
+    output_lines = result.stdout.split('\n')
+
+    # Extract file/directory names and sizes
+    data = [line.split('\t') for line in output_lines if line]
+    df = pd.DataFrame(data, columns=['size', 'path'])
+    df['file_name'] = df.path.str.replace('train_|test_', '', regex=True).\
+    apply(lambda x: Path(x).stem)
+    return df
+
+def add_datepart(df, fldnames, drop=True, time=False, errors="raise", exclude_cols=[]):
+    """
+    Converts a column of df from a datetime64 to many columns containing 
+    the information from the date.
+    It returns a modified version of the original DataFrame.
+
+    Parameters:
+    df (pd.DataFrame): The DataFrame containing the date column.
+    fldnames (str or list): The name(s) of the date column(s).
+    drop (bool): Whether to drop the original date column(s).
+    time (bool): Whether to include time-related date parts (Hour, Minute, Second).
+    errors (str): How to handle parsing errors when converting to datetime.
+    exclude_cols (list): List of columns to exclude from date part creation.
+
+    Returns:
+    pd.DataFrame: The DataFrame with added date parts.
+    """
+
+    if isinstance(fldnames, str):
+        fldnames = [fldnames]
+    
+    for fldname in fldnames:
+        if fldname in exclude_cols:
+            continue  # Skip this column if it's in the exclude list
+            
+        fld = df[fldname]
+        fld_dtype = fld.dtype
+        
+        if isinstance(fld_dtype, pd.core.dtypes.dtypes.DatetimeTZDtype):
+            fld_dtype = np.datetime64
+
+        if not np.issubdtype(fld_dtype, np.datetime64):
+            df[fldname] = fld = pd.to_datetime(fld, infer_datetime_format=True, errors=errors)
+        
+        targ_pre = re.sub('[Dd]ate$', '', fldname)
+        attr = ['Year', 'Month', 'Day', 'Dayofweek', 'Dayofyear',
+                'Is_month_end', 'Is_month_start', 'Is_quarter_end', 'Is_quarter_start', 
+                'Is_year_end', 'Is_year_start']
+        
+        if time:
+            attr = attr + ['Hour', 'Minute', 'Second']
+        
+        for n in attr:
+            df[targ_pre + n] = getattr(fld.dt, n.lower())
+        
+        if drop:
+            df = df.drop(fldname, axis=1)
+
+    return df
