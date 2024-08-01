@@ -7,6 +7,7 @@ import seaborn as sns
 from pathlib import Path
 
 
+# This method was created based on Kaggle method from the course 'Time Series'
 def seasonal_plot(X, y, period, freq, ax=None):
     if ax is None:
         _, ax = plt.subplots()
@@ -39,7 +40,7 @@ def seasonal_plot(X, y, period, freq, ax=None):
         )
     return ax
 
-
+# This method was created based on Kaggle method from the course 'Time Series'
 def plot_periodogram(ts, detrend='linear', ax=None):
     from scipy.signal import periodogram
     fs = pd.Timedelta("365D") / pd.Timedelta("1D")
@@ -73,7 +74,7 @@ def plot_periodogram(ts, detrend='linear', ax=None):
     ax.set_title("Periodogram")
     return ax
 
-
+# This method was created based on Kaggle method from the course 'Time Series'
 def lagplot(x, y=None, shift=1, standardize=False, ax=None, **kwargs):
     from matplotlib.offsetbox import AnchoredText
     x_ = x.shift(shift)
@@ -110,7 +111,7 @@ def lagplot(x, y=None, shift=1, standardize=False, ax=None, **kwargs):
     ax.set(title=f"Lag {shift}", xlabel=x_.name, ylabel=y_.name)
     return ax
 
-
+# This method was created based on Kaggle method from the course 'Time Series'
 def plot_lags(x,
               y=None,
               lags=6,
@@ -139,7 +140,7 @@ def plot_lags(x,
     fig.tight_layout(w_pad=0.1, h_pad=0.1)
     return fig
 
-
+# This method was created based on Kaggle method from the course 'Time Series'
 class BoostedHybrid:
     def __init__(self, model_1, model_2):
         self.model_1 = model_1
@@ -182,7 +183,7 @@ class BoostedHybrid:
         return y_pred.unstack(self.stack_cols)
 
 
-# From Lesson 6
+# This method was created based on Kaggle method from the course 'Time Series'
 def make_lags(ts, lags, lead_time=1, name='y'):
     return pd.concat(
         {
@@ -191,19 +192,19 @@ def make_lags(ts, lags, lead_time=1, name='y'):
         },
         axis=1)
 
-
+# This method was created based on Kaggle method from the course 'Time Series'
 def make_leads(ts, leads, name='y'):
     return pd.concat(
         {f'{name}_lead_{i}': ts.shift(-i)
          for i in reversed(range(leads))},
         axis=1)
 
-
+# This method was created based on Kaggle method from the course 'Time Series'
 def make_multistep_target(ts, steps, reverse=False):
     shifts = reversed(range(steps)) if reverse else range(steps)
     return pd.concat({f'y_step_{i + 1}': ts.shift(-i) for i in shifts}, axis=1)
 
-
+# This method was created based on Kaggle method from the course 'Time Series'
 def create_multistep_example(n, steps, lags, lead_time=1):
     ts = pd.Series(
         np.arange(n),
@@ -217,14 +218,14 @@ def create_multistep_example(n, steps, lags, lead_time=1):
                      .set_properties(['Features'], **{'background-color': 'Lavender'})
     return data
 
-
+# This method was created based on Kaggle method from the course 'Time Series'
 def load_multistep_data():
     df1 = create_multistep_example(10, steps=1, lags=3, lead_time=1)
     df2 = create_multistep_example(10, steps=3, lags=4, lead_time=2)
     df3 = create_multistep_example(10, steps=3, lags=4, lead_time=1)
     return [df1, df2, df3]
 
-
+# This method was created based on Kaggle method from the course 'Time Series'
 def plot_multistep(y, every=1, ax=None, palette_kwargs=None):
     palette_kwargs_ = dict(palette='husl', n_colors=16, desat=None)
     if palette_kwargs is not None:
