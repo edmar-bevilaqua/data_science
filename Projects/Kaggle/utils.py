@@ -284,7 +284,7 @@ def add_datepart(df, fldnames, drop=True, time=False, errors="raise", exclude_co
             fld_dtype = np.datetime64
 
         if not np.issubdtype(fld_dtype, np.datetime64):
-            df[fldname] = fld = pd.to_datetime(fld, infer_datetime_format=True, errors=errors)
+            df[fldname] = pd.to_datetime(fld, errors=errors)
         
         targ_pre = re.sub('[Dd]ate$', '', fldname)
         attr = ['Year', 'Month', 'Day', 'Dayofweek', 'Dayofyear',
@@ -295,7 +295,7 @@ def add_datepart(df, fldnames, drop=True, time=False, errors="raise", exclude_co
             attr = attr + ['Hour', 'Minute', 'Second']
         
         for n in attr:
-            df[targ_pre + n] = getattr(fld.dt, n.lower())
+            df.loc[:, targ_pre + n] = getattr(fld.dt, n.lower())
         
         if drop:
             df = df.drop(fldname, axis=1)
