@@ -4,3 +4,5 @@ Projects/Kaggle/Store Sales - Time Series Forecasting/submission.csv
 Projects/Kaggle/Store Sales - Time Series Forecasting/__pycache__/utils.cpython-311.pyc
 Projects/Kaggle/__pycache__/utils.cpython-311.pyc
 *.pyc
+Projects/Kaggle/__pycache__/utils.cpython-311.pyc
+*.pyc
