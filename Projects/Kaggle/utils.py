@@ -1,3 +1,4 @@
+from ast import List
 import re
 import subprocess
 import matplotlib.pyplot as plt
@@ -184,11 +185,11 @@ class BoostedHybrid:
 
 
 # This method was created based on Kaggle method from the course 'Time Series'
-def make_lags(ts, lags, lead_time=1, name='y'):
+def make_lags(ts, lags, name='y'):
     return pd.concat(
         {
             f'{name}_lag_{i}': ts.shift(i)
-            for i in range(lead_time, lags + lead_time)
+            for i in lags
         },
         axis=1)
 
