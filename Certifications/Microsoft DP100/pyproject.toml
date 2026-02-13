@@ -1,0 +1,34 @@
+[project]
+name = "microsoft_dp100"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Edmar Junyor Bevilaqua",email = "edmar.bevi@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "azure-ai-ml (>=1.31.0,<2.0.0)",
+    "python-dotenv (>=1.2.1,<2.0.0)",
+    "ipykernel (>=7.2.0,<8.0.0)",
+    "jupyter (>=1.1.1,<2.0.0)",
+    "pandas (>=3.0.0,<4.0.0)",
+    "numpy (>=2.4.2,<3.0.0)",
+    "scikit-learn (>=1.8.0,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.15.0"
+
+[tool.ruff]
+# Habilita a formatação de notebooks
+extend-include = ["*.ipynb"]
+
+[tool.ruff.format]
+# Usa aspas duplas (estilo Black)
+quote-style = "double"
